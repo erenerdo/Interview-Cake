@@ -29,23 +29,23 @@ function getMaxProfit(stockPrices) {
 
   // Check if enough stock prices
   if (stockPrices.length < 2) {
-    return 'Not enough valid stock prices';
+    throw new Error('Not enough valid stock prices');
   }
 
-  var currentProfit = stockPrices[1] - stockPrices[0];
-  var maxProfit = currentProfit;
-  var currentMin = Number.MAX_SAFE_INTEGER;
+  // Initialize Max Profit and Current Min
+  var maxProfit = stockPrices[1] - stockPrices[0];
+  var currentMin = stockPrices[0];
 
-  stockPrices.forEach(function(element) {
-    // Element is less than current min so reset current min
-    if (element < currentMin) {
-      currentProfit = element - currentMin;
-      currentMin = element;
-    } else {
-      currentProfit = element - currentMin;
-    }
-    maxProfit = Math.max(maxProfit, currentProfit);
-  });
+  for (var i = 1; i < stockPrices.length; i++) {
+    // Stock current price for simplicity
+    var currentPrice = stockPrices[i];
+
+    // Check and see if current sell price would yield a max profit
+    maxProfit = Math.max(currentPrice - currentMin, maxProfit);
+
+    // Check if current price can be a new minimum
+    currentMin = Math.min(currentMin, currentPrice);
+  }
   return maxProfit;
 }
 
